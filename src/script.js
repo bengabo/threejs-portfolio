@@ -60,25 +60,8 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-const bloomPass = new UnrealBloomPass(
-  new THREE.Vector2(sizes.width, sizes.height),
-  1.5,
-  0.4,
-  0.85
-);
-bloomPass.threshold = 0;
-bloomPass.strength = 0.6;
-const renderScene = new RenderPass(scene, camera);
-const composer = new EffectComposer(renderer);
-composer.setPixelRatio(2);
-composer.addPass(renderScene);
-composer.addPass(bloomPass);
-
 const group = new THREE.Group();
 scene.add(group);
-
-composer.setSize(sizes.width, sizes.height);
-bloomPass.setSize(sizes.width, sizes.height);
 
 /**
  * Textures
@@ -111,7 +94,7 @@ const torus2 = torus(6, 0.05, 8, 8, 0xffffff);
 torus2.rotation.set(1, 1, 1);
 const torus3 = torus(6, 0.05, 8, 8, 0xffffff);
 torus3.rotation.set(2.5, 2.5, 2.5);
-scene.add(torus1, torus2, torus3);
+scene.add(torus1);
 
 // Stars field
 const addStar = () => {
@@ -135,8 +118,8 @@ const cube = new THREE.Mesh(
     map: cubeTexture,
   })
 );
-cube.rotation.y = -15;
-cube.rotation.x = 0.5;
+cube.rotation.y = 10;
+cube.rotation.x = 1;
 scene.add(cube);
 
 const helper = new THREE.BoxHelper(cube);
@@ -177,20 +160,22 @@ scene.add(pointLight, ambientLight);
  */
 const lightHelper = new THREE.PointLightHelper(pointLight);
 const gridHelper = new THREE.GridHelper(200, 50);
-scene.add(lightHelper, gridHelper);
+// scene.add(lightHelper, gridHelper);
 
 /**
  * Scroll function
  */
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
-  moon.rotation.x += 0.05;
-  moon.rotation.y += 0.075;
-  moon.rotation.z += 0.05;
+  moon.rotation.x += 0.025;
+  moon.rotation.y += 0.025;
+  moon.rotation.z += 0.025;
 
   camera.position.z = t * -0.01;
   camera.position.x = t * -0.0002;
   camera.rotation.y = t * -0.0002;
+
+  cube.rotation.x += 0.05;
 }
 
 document.body.onscroll = moveCamera;
@@ -210,10 +195,9 @@ const clock = new THREE.Clock();
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
 
-  // torus1.rotation.x += 0.01;
-  // torus1.rotation.y += 0.005;
-  // torus1.rotation.z += 0.01;
-  moon.rotation.y -= 0.0005;
+  torus1.rotation.x += 0.001;
+  torus1.rotation.y += 0.005;
+  moon.rotation.y -= 0.0001;
 
   // Update controls
   // controls.update();
