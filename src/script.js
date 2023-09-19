@@ -1,17 +1,11 @@
 import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import * as dat from "lil-gui";
 
 /**
  * Base
  */
-// Debug
-const gui = new dat.GUI();
-
 // Canvas
 const canvas = document.querySelector("#bg");
 
@@ -94,7 +88,30 @@ const torus2 = torus(6, 0.05, 8, 8, 0xffffff);
 torus2.rotation.set(1, 1, 1);
 const torus3 = torus(6, 0.05, 8, 8, 0xffffff);
 torus3.rotation.set(2.5, 2.5, 2.5);
-scene.add(torus1);
+// scene.add(torus1);
+
+// Cube
+const cubeTexture = textureLoader.load("./img/Wam_visage.png");
+const cube = new THREE.Mesh(
+  new THREE.BoxGeometry(5, 5, 5),
+  new THREE.MeshBasicMaterial({
+    map: cubeTexture,
+  })
+);
+cube.rotation.y = 10;
+cube.rotation.x = 1;
+// scene.add(cube);
+
+const helper = new THREE.BoxHelper(cube);
+helper.material.color.setHex(0x474747);
+helper.material.blending = THREE.AdditiveBlending;
+helper.material.transparent = true;
+// scene.add(helper);
+
+const cubeTorusGroup = new THREE.Group();
+cubeTorusGroup.add(torus1, cube);
+cubeTorusGroup.position.set(2, 0, 0);
+scene.add(cubeTorusGroup);
 
 // Stars field
 const addStar = () => {
@@ -109,24 +126,6 @@ const addStar = () => {
   scene.add(star);
 };
 Array(250).fill().forEach(addStar);
-
-// Cube
-const cubeTexture = textureLoader.load("./img/Wam_visage.png");
-const cube = new THREE.Mesh(
-  new THREE.BoxGeometry(5, 5, 5),
-  new THREE.MeshBasicMaterial({
-    map: cubeTexture,
-  })
-);
-cube.rotation.y = 10;
-cube.rotation.x = 1;
-scene.add(cube);
-
-const helper = new THREE.BoxHelper(cube);
-helper.material.color.setHex(0x474747);
-helper.material.blending = THREE.AdditiveBlending;
-helper.material.transparent = true;
-// scene.add(helper);
 
 // Moon
 const moonTexture = textureLoader.load("./img/Moon_Diffuse_4000x2000px.jpg");
@@ -144,8 +143,8 @@ const moon = new THREE.Mesh(
   })
 );
 scene.add(moon);
-moon.position.z = 30;
-moon.position.x = -10;
+moon.position.z = 33;
+moon.position.x = -15;
 
 /**
  * Lights
