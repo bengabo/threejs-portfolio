@@ -7,11 +7,11 @@
 
 html,
 body {
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .webgl {
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   left: 0;
   outline: none;
@@ -22,7 +22,6 @@ canvas {
   top: 0;
   left: 0;
 }
-
 :root {
   --dark-bg: rgba(15, 15, 15, 0.95);
   --spacing: 350px;
@@ -51,12 +50,6 @@ blockquote {
   font-family: elevon, sans-serif;
   font-weight: 700;
   font-style: normal;
-}
-
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
 }
 
 header {
